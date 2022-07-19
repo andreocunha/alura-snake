@@ -1,0 +1,17 @@
+{
+  "name": "alurasnake",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "nodemon": "^2.0.18",
+    "socket.io": "^4.5.1",
+    "string-to-color": "^2.2.2"
+  }
+}
