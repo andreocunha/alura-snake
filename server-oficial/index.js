@@ -26,6 +26,20 @@ io.on("connection", (socket) => {
     const fruit = new Fruit();
     io.to(`${roomId}`).emit('newFruit', fruit);
     game.updateHasFruit();
+
+    let time = 90;
+    const interval = setInterval(startTimeGame, 1000);
+
+    function startTimeGame(){
+      time--;
+      console.log(time);
+      io.to(`${roomId}`).emit('time', time);
+      if(time == 0){
+        io.to(`${roomId}`).emit('endGame', 'Time out');
+        clearInterval(interval);
+      }
+    }
+
   })
 
   socket.on('newGame', () => {

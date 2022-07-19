@@ -5,6 +5,7 @@ export default function App() {
   const [name, setName] = useState('');
   const [roomId, setRoomId] = useState('');
   const [fruit, setFruit] = useState(null);
+  const [time, setTime] = useState(0);
 
   useEffect(() => { 
     socket.on('gameRoomId', (roomId) => {
@@ -24,6 +25,10 @@ export default function App() {
     socket.on('endGame', (user) => {
       console.log("Fim do jogo");
       console.log(user);
+    })
+
+    socket.on('time', (time) => {
+      setTime(time);
     })
     
   }, []);
@@ -53,6 +58,9 @@ export default function App() {
 
   return (
     <div style={styles.container}>
+
+      <h3>{time}</h3>
+
       <h1>Snake Game</h1>
 
       <input placeholder='Nome do jogador' type="text" value={name} onChange={(e) => setName(e.target.value)} />
