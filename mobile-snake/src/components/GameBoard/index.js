@@ -1,15 +1,15 @@
 import { View } from 'react-native';
 import styles from './styles';
+import { GameBoardConfig } from '../../utils/constants';
 
 export function GameBoard({
-  numberOfRows,
   snakePosition,
   foodPosition,
   snakeColor,
   foodColor
 }) {
   
-  const oneDArray = new Array(numberOfRows).fill(null);
+  const oneDArray = new Array(GameBoardConfig.numberOfRowsAndColumns).fill(null);
 
   const isSnakeOnCoordinates = (x, y) =>
     (snakePosition.x === x && snakePosition.y === y) ||

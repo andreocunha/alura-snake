@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { StatusBar, Text, View } from 'react-native';
 import { GameBoard } from '../../components/GameBoard';
 import { GameControl } from '../../components/GameControl';
+import { GameBoardConfig } from '../../utils/constants';
 import styles from './styles';
 
 export default function Game() {
@@ -30,6 +31,13 @@ export default function Game() {
     }
   }
 
+  function checkIsOutOfBounds(headPosition){
+    if (headPosition.x < 0 || headPosition.x >= GameBoardConfig.numberOfRowsAndColumns || headPosition.y < 0 || headPosition.y >= GameBoardConfig.numberOfRowsAndColumns) {
+      return true;
+    }
+    return false;
+  }
+
   function updateSnakePosition(newDirection) {
     const newSnakePosition = [...snakePosition];
     const head = newSnakePosition[0];
@@ -55,6 +63,20 @@ export default function Game() {
         break;
     }
     checkGetFood(newHead);
+    if (checkIsOutOfBounds(newHead)) {
+      if (newHead.x < 0) {
+        newHead.x = GameBoardConfig.numberOfRowsAndColumns - 1;
+      }
+      if (newHead.x >= GameBoardConfig.numberOfRowsAndColumns) {
+        newHead.x = 0;
+      }
+      if (newHead.y < 0) {
+        newHead.y = GameBoardConfig.numberOfRowsAndColumns - 1;
+      }
+      if (newHead.y >= GameBoardConfig.numberOfRowsAndColumns) {
+        newHead.y = 0;
+      }
+    }
     newSnakePosition.unshift(newHead);
     newSnakePosition.pop();
     setSnakePosition(newSnakePosition);
@@ -71,11 +93,7 @@ export default function Game() {
         snakeColor="#FF0000"
         foodColor="#00FF00"
       />
-      <GameControl 
-        onClick={(direction) => {
-          updateSnakePosition(direction);
-        }}
-      />
+      <GameControl onClick={(direction) => { updateSnakePosition(direction)}}/>
     </View>
   );
 }

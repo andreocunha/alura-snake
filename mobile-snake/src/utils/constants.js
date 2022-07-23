@@ -4,3 +4,7 @@ export const Direction = {
   left: "LEFT",
   right: "RIGHT",
 }
+
+export const GameBoardConfig = {
+  numberOfRowsAndColumns: 15,
+}
