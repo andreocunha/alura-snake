@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { StatusBar, Text, View } from 'react-native';
 import { GameBoard } from '../../components/GameBoard';
 import { GameControl } from '../../components/GameControl';
@@ -80,6 +80,7 @@ export default function Game() {
     newSnakePosition.unshift(newHead);
     newSnakePosition.pop();
     setSnakePosition(newSnakePosition);
+    setSnakes([newSnakePosition, snake2Position]);
   }
 
   return (
@@ -88,7 +89,7 @@ export default function Game() {
       <Text style={styles.score}>Score: {score}</Text>
       <GameBoard 
         numberOfRows={10}
-        snakePosition={snakePosition}
+        snakesPosition={snakes}
         foodPosition={foodPosition}
         snakeColor="#FF0000"
         foodColor="#00FF00"

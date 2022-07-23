@@ -3,6 +3,7 @@ import styles from './styles';
 import { GameBoardConfig } from '../../utils/constants';
 
 export function GameBoard({
+  snakesPosition,
   snakePosition,
   foodPosition,
   snakeColor,
@@ -11,12 +12,20 @@ export function GameBoard({
   
   const oneDArray = new Array(GameBoardConfig.numberOfRowsAndColumns).fill(null);
 
-  const isSnakeOnCoordinates = (x, y) =>
-    (snakePosition.x === x && snakePosition.y === y) ||
-    snakePosition.some((segment) => segment.x === x && segment.y === y);
+  function hasSnakeOnPosition(x, y) {
+    return snakesPosition.some(snake => snake.some(position => position.x === x && position.y === y));
+  }
 
-  const isFoodOnCoordinates = (x, y) =>
-    foodPosition.x === x && foodPosition.y === y;
+  function hasFoodOnPosition(x, y) {
+    return foodPosition.x === x && foodPosition.y === y;
+  }
+
+  // const isSnakeOnCoordinates = (x, y) =>
+  //   (snakePosition.x === x && snakePosition.y === y) ||
+  //   snakePosition.some((segment) => segment.x === x && segment.y === y);
+
+  // const isFoodOnCoordinates = (x, y) =>
+  //   foodPosition.x === x && foodPosition.y === y;
 
   return (
     <View style={styles.container}>
@@ -29,10 +38,10 @@ export function GameBoard({
                   key={`column-${columnIndex}`}
                   style={[
                     styles.columnStyle,
-                    isSnakeOnCoordinates(columnIndex, rowIndex)
+                    hasSnakeOnPosition(columnIndex, rowIndex)
                       ? { backgroundColor: snakeColor }
                       : null,
-                    isFoodOnCoordinates(columnIndex, rowIndex)
+                    hasFoodOnPosition(columnIndex, rowIndex)
                       ? { backgroundColor: foodColor }
                       : null,
                   ]}
