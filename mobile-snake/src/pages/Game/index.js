@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StatusBar, Text, View } from 'react-native';
 import { GameBoard } from '../../components/GameBoard';
 import { GameControl } from '../../components/GameControl';
-import { GameBoardConfig } from '../../utils/constants';
+import { GameBoardConfig, Direction } from '../../utils/constants';
 import styles from './styles';
 
 export default function Game() {
@@ -20,13 +20,14 @@ export default function Game() {
   const [snakes, setSnakes] = useState([ snakePosition, snake2Position ]);
   const [foodPosition, setFoodPosition] = useState({ x: 3, y: 2 });
   const [score, setScore] = useState(0);
+  const [direction, setDirection] = useState(Direction.right);
 
   function checkGetFood(headPosition){
     if (headPosition.x === foodPosition.x && headPosition.y === foodPosition.y) {
       setScore(score + 1);
       setFoodPosition({
-        x: Math.floor(Math.random() * 10),
-        y: Math.floor(Math.random() * 10),
+        x: Math.floor(Math.random() * GameBoardConfig.numberOfRowsAndColumns),
+        y: Math.floor(Math.random() * GameBoardConfig.numberOfRowsAndColumns),
       });
     }
   }
@@ -39,6 +40,7 @@ export default function Game() {
   }
 
   function updateSnakePosition(newDirection) {
+    setDirection(newDirection);
     const newSnakePosition = [...snakePosition];
     const head = newSnakePosition[0];
     const newHead = {
@@ -47,16 +49,16 @@ export default function Game() {
     };
     
     switch (newDirection) {
-      case 'RIGHT':
+      case Direction.right:
         newHead.x += 1;
         break;
-      case 'LEFT':
+      case Direction.left:
         newHead.x -= 1;
         break;
-      case 'UP':
+      case Direction.up:
         newHead.y -= 1;
         break;
-      case 'DOWN':
+      case Direction.down:
         newHead.y += 1;
         break;
       default:
@@ -82,6 +84,14 @@ export default function Game() {
     setSnakePosition(newSnakePosition);
     setSnakes([newSnakePosition, snake2Position]);
   }
+
+  // a function to update the snake position every 500ms
+  useEffect(() => {
+    const interval = setInterval(() => {
+      updateSnakePosition(direction);
+    }, 200);
+    return () => clearInterval(interval);
+  }, [snakePosition]);
 
   return (
     <View style={styles.container}>
